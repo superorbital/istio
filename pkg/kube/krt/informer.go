@@ -161,6 +161,12 @@ func WrapClient[I controllers.ComparableObject](c kclient.Informer[I], opts ...C
 	return h
 }
 
+// NewCollectionFromInformer builds a Collection[I] from an initialized kclient.Informer[I].
+// Generic types can be turned into collections using kubeclient.GetInformerFilteredFromGVR
+func NewCollectionFromInformer[I controllers.ComparableObject](i kclient.Informer[I], opts ...CollectionOption) Collection[I] {
+	return WrapClient[I](i, opts...)
+}
+
 func NewInformer[I controllers.ComparableObject](c kube.Client, opts ...CollectionOption) Collection[I] {
 	return NewInformerFiltered[I](c, kubetypes.Filter{}, opts...)
 }
